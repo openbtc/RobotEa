@@ -65,11 +65,12 @@ func HttpPostForm(client *http.Client, reqUrl string, postData url.Values) (map[
 		return nil, err;
 	}
 
-	var bodyDataMap map[string]interface{};
-	err = json.Unmarshal(bodyData, &bodyDataMap);
-	if err != nil {
-		return nil, err;
-	}
+	//var bodyDataMap map[string]interface{};
+	//err = json.Unmarshal(bodyData, &bodyDataMap);
+	//if err != nil {
+	//	println(string(bodyData));
+	//	return nil, err;
+	//}
 
-	return bodyDataMap, nil;
+	return bodyData , nil;
 }
