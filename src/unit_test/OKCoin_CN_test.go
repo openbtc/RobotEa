@@ -9,7 +9,7 @@ import (
 
 func Test_OKCoin_CN(t *testing.T) {
     var api API;
-    api = okcoin.New("", "");
+    api = okcoin.New("okcoin_cn", "", "");
     tk, err := api.GetTicker(BTC_CNY);
     if err != nil{
         t.Logf("%s", err.Error());
