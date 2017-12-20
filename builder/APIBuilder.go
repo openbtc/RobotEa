@@ -1,19 +1,19 @@
 package builder
 
 import (
-	. "github.com/nntaoli/crypto_coin_api"
-	"github.com/nntaoli/crypto_coin_api/chbtc"
-	"github.com/nntaoli/crypto_coin_api/coincheck"
+	. "github.com/openbtc/RobotEa"
+	"github.com/openbtc/RobotEa/chbtc"
+	"github.com/openbtc/RobotEa/coincheck"
 	"context"
-	"github.com/nntaoli/crypto_coin_api/huobi"
-	"github.com/nntaoli/crypto_coin_api/okcoin"
-	"github.com/nntaoli/crypto_coin_api/poloniex"
-	"github.com/nntaoli/crypto_coin_api/yunbi"
-	"github.com/nntaoli/crypto_coin_api/zaif"
-	"github.com/qiniu/log"
+	"github.com/openbtc/RobotEa/huobi"
+	"github.com/openbtc/RobotEa/okcoin"
+	"github.com/openbtc/RobotEa/poloniex"
+	"github.com/openbtc/RobotEa/yunbi"
+	"github.com/openbtc/RobotEa/zaif"
 	"net"
 	"net/http"
 	"time"
+	"log"
 )
 
 type APIBuilder struct {

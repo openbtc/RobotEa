@@ -2,7 +2,7 @@ package yunbi
 
 import (
 	"net/http"
-	. "github.com/nntaoli/crypto_coin_api"
+	. "github.com/openbtc/RobotEa"
 	"fmt"
 	"log"
 	"io/ioutil"
