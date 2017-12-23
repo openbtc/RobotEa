@@ -8,3 +8,7 @@
 
 -----------------
 ### 交流QQ群：574829125
+
+### 
+
+![RobotEa/wx_pay.JPG] (RobotEa/wx_pay.JPG)
