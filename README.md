@@ -11,4 +11,4 @@
 
 ### 
 
-![RobotEa/wx_pay.JPG] (RobotEa/wx_pay.JPG)
+![](https://raw.githubusercontent.com/openbtc/RobotEa/dev/wx_pay.JPG)
