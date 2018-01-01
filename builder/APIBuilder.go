@@ -1,20 +1,20 @@
 package builder
 
 import (
+	"context"
 	. "github.com/openbtc/RobotEa"
+	"github.com/openbtc/RobotEa/bitstamp"
 	"github.com/openbtc/RobotEa/chbtc"
 	"github.com/openbtc/RobotEa/coincheck"
-	"context"
 	"github.com/openbtc/RobotEa/huobi"
 	"github.com/openbtc/RobotEa/okcoin"
 	"github.com/openbtc/RobotEa/poloniex"
 	"github.com/openbtc/RobotEa/yunbi"
 	"github.com/openbtc/RobotEa/zaif"
+	"log"
 	"net"
 	"net/http"
 	"time"
-	"log"
-	"github.com/openbtc/RobotEa/bitstamp"
 )
 
 type APIBuilder struct {
@@ -84,7 +84,9 @@ func (builder *APIBuilder) Build(exName string) (api API) {
 	case "zaif.jp":
 		_api = zaif.New(builder.client, builder.apiKey, builder.secretkey)
 	case "bitstamp.net":
-		_api = bitstamp.NewBitstamp(builder.client , builder.apiKey , builder.secretkey , builder.clientId)
+		_api = bitstamp.NewBitstamp(builder.client, builder.apiKey, builder.secretkey, builder.clientId)
+	case "huobi.pro":
+		_api = huobi.NewHuobiPro(builder.client, builder.apiKey, builder.secretkey, builder.clientId)
 	default:
 		log.Println("error")
 
