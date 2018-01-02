@@ -1,5 +1,5 @@
 ### 数字资产交易平台Go API库
-(the crypto_coin_api is crypto coin trade api wrap)   
+(The RobotEa Project is crypto coin trading api wrap)   
 
 ### 注意事项
 1. 推荐使用gogland idea 开发。
@@ -11,4 +11,4 @@
 
 ### 
 
-![](https://raw.githubusercontent.com/openbtc/RobotEa/dev/wx_pay.JPG)
+<img src="https://raw.githubusercontent.com/openbtc/RobotEa/dev/wx_pay.JPG" width="250" alt="">
