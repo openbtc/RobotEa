@@ -3,19 +3,21 @@ package builder
 import (
 	"context"
 	. "github.com/openbtc/RobotEa"
+	"github.com/openbtc/RobotEa/binance"
+	"github.com/openbtc/RobotEa/bitfinex"
 	"github.com/openbtc/RobotEa/bitstamp"
+	"github.com/openbtc/RobotEa/btcbox"
 	"github.com/openbtc/RobotEa/chbtc"
 	"github.com/openbtc/RobotEa/coincheck"
 	"github.com/openbtc/RobotEa/huobi"
+	"github.com/openbtc/RobotEa/kraken"
 	"github.com/openbtc/RobotEa/okcoin"
 	"github.com/openbtc/RobotEa/poloniex"
 	"github.com/openbtc/RobotEa/yunbi"
 	"github.com/openbtc/RobotEa/zaif"
-	"log"
 	"net"
 	"net/http"
 	"time"
-	"github.com/openbtc/RobotEa/bitfinex"
 )
 
 type APIBuilder struct {
@@ -88,10 +90,18 @@ func (builder *APIBuilder) Build(exName string) (api API) {
 		_api = bitstamp.NewBitstamp(builder.client, builder.apiKey, builder.secretkey, builder.clientId)
 	case "huobi.pro":
 		_api = huobi.NewHuobiPro(builder.client, builder.apiKey, builder.secretkey, builder.clientId)
+	case "okex.com":
+		_api = okcoin.NewOKExSpot(builder.client, builder.apiKey, builder.secretkey)
 	case "bitfinex.com":
 		_api = bitfinex.New(builder.client, builder.apiKey, builder.secretkey)
+	case "kraken.com":
+		_api = kraken.New(builder.client, builder.apiKey, builder.secretkey)
+	case "binance.com":
+		_api = binance.New(builder.client, builder.apiKey, builder.secretkey)
+	case "btcbox.co.jp":
+		_api = btcbox.New(builder.client, builder.apiKey, builder.secretkey)
 	default:
-		log.Println("error")
+		panic("exchange name error.")
 
 	}
 	return _api
