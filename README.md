@@ -1,5 +1,8 @@
 ### 数字资产交易平台Go API库
-(The RobotEa Project is crypto coin trading api wrap)   
+(The RobotEa Project is crypto coin trading api wrap)
+
+### RobotEa作用或者目的
+RobotEa项目是为了统一并标准化各个数字资产交易平台的接口而设计，同一个策略可以随时切换到任意一个交易平台，而不需要更改任何代码。
 
 ### 注意事项
 1. 推荐使用gogland idea 开发。
