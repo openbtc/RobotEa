@@ -4,9 +4,6 @@ import (
 	"fmt"
 	. "github.com/openbtc/RobotEa"
 	"net/http"
-	//"strconv"
-	//"log"
-	"strconv"
 	"strings"
 )
 
