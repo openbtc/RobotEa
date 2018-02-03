@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/btcsuite/goleveldb/leveldb/errors"
 	. "github.com/openbtc/RobotEa"
-	"internal/log"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
