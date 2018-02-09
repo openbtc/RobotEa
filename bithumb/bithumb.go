@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/btcsuite/goleveldb/leveldb/errors"
 	. "github.com/openbtc/RobotEa"
 	"log"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"sort"
 	"strconv"
 	"time"
+	"errors"
 )
 
 type Bithumb struct {
