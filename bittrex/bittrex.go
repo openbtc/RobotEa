@@ -5,6 +5,7 @@ import (
 	. "github.com/openbtc/RobotEa"
 	"net/http"
 	"sort"
+	"errors"
 )
 
 type Bittrex struct {
