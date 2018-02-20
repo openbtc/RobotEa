@@ -39,15 +39,13 @@ type Account struct {
 }
 
 type Ticker struct {
-	ContractType string       `json:"omitempty"`
-	Pair         CurrencyPair `json:"omitempty"`
-	Last         float64      `json:"last"`
-	Buy          float64      `json:"buy"`
-	Sell         float64      `json:"sell"`
-	High         float64      `json:"high"`
-	Low          float64      `json:"low"`
-	Vol          float64      `json:"vol"`
-	Date         uint64       `json:"date"` // 单位:秒(second)
+	Last float64 `json:"last"`
+	Buy  float64 `json:"buy"`
+	Sell float64 `json:"sell"`
+	High float64 `json:"high"`
+	Low  float64 `json:"low"`
+	Vol  float64 `json:"vol"`
+	Date uint64  `json:"date"` // 单位:秒(second)
 }
 
 type DepthRecord struct {
@@ -70,8 +68,6 @@ func (dr DepthRecords) Less(i, j int) bool {
 }
 
 type Depth struct {
-	ContractType string //for future
-	Pair         CurrencyPair
 	AskList,
 	BidList DepthRecords
 }
@@ -84,7 +80,6 @@ type APIConfig struct {
 }
 
 type Kline struct {
-	Pair      CurrencyPair
 	Timestamp int64
 	Open,
 	Close,
