@@ -3,6 +3,7 @@ package builder
 import (
 	"context"
 	. "github.com/openbtc/RobotEa"
+	"github.com/openbtc/RobotEa/bigone"
 	"github.com/openbtc/RobotEa/binance"
 	"github.com/openbtc/RobotEa/bitfinex"
 	"github.com/openbtc/RobotEa/bithumb"
@@ -121,6 +122,8 @@ func (builder *APIBuilder) Build(exName string) (api API) {
 		_api = zb.New(builder.client, builder.apiKey, builder.secretkey)
 	case COINEX:
 		_api = coinex.New(builder.client, builder.apiKey, builder.secretkey)
+	case BIGONE:
+		_api = bigone.New(builder.client, builder.apiKey, builder.secretkey)
 	default:
 		panic("exchange name error [" + exName + "].")
 
