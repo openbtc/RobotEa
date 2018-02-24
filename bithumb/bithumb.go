@@ -283,13 +283,9 @@ func (bit *Bithumb) GetTicker(currency CurrencyPair) (*Ticker, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, isok := respmap["status"].(string)
-	if s != "0000" || isok != true {
-		msg := "ticker error"
-		if isok {
-			msg = s
-		}
-		return nil, errors.New(msg)
+
+	if respmap["status"].(string) != "0000" {
+		return nil, errors.New(respmap["status"].(string))
 	}
 
 	datamap := respmap["data"].(map[string]interface{})

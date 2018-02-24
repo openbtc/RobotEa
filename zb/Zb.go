@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	MARKET_URL = "http://api.zb.com/data/v1/"
-	TICKER_API = "ticker?market=%s"
-	DEPTH_API  = "depth?market=%s&size=%d"
+	MARKET_URL    = "http://api.zb.com/data/v1/"
+	TICKER_API    = "ticker?market=%s"
+	DEPTH_API     = "depth?market=%s&size=%d"
 
 	TRADE_URL                 = "https://trade.zb.com/api/"
 	GET_ACCOUNT_API           = "getAccountInfo"
@@ -43,7 +43,6 @@ func (zb *Zb) GetExchangeName() string {
 }
 
 func (zb *Zb) GetTicker(currency CurrencyPair) (*Ticker, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	resp, err := HttpGet(zb.httpClient, MARKET_URL+fmt.Sprintf(TICKER_API, strings.ToLower(currency.ToSymbol("_"))))
 	if err != nil {
 		return nil, err
@@ -64,19 +63,16 @@ func (zb *Zb) GetTicker(currency CurrencyPair) (*Ticker, error) {
 }
 
 func (zb *Zb) GetDepth(size int, currency CurrencyPair) (*Depth, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	resp, err := HttpGet(zb.httpClient, MARKET_URL+fmt.Sprintf(DEPTH_API, currency.ToSymbol("_"), size))
 	if err != nil {
 		return nil, err
 	}
 
-	//log.Println(resp)
+	log.Println(resp)
 
-	asks, ok1 := resp["asks"].([]interface{})
-	bids, ok2 := resp["bids"].([]interface{})
-	if ok1 != true || ok2 != true {
-		return nil, errors.New("no depth data")
-	}
+	asks := resp["asks"].([]interface{})
+	bids := resp["bids"].([]interface{})
+
 	//log.Println(asks)
 	//log.Println(bids)
 
@@ -133,7 +129,7 @@ func (zb *Zb) GetAccount() (*Account, error) {
 	var respmap map[string]interface{}
 	err = json.Unmarshal(resp, &respmap)
 	if err != nil {
-		//log.Println("json unmarshal error")
+		log.Println("json unmarshal error")
 		return nil, err
 	}
 
@@ -167,7 +163,6 @@ func (zb *Zb) GetAccount() (*Account, error) {
 }
 
 func (zb *Zb) placeOrder(amount, price string, currency CurrencyPair, tradeType int) (*Order, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	params := url.Values{}
 	params.Set("method", "order")
 	params.Set("price", price)
@@ -178,7 +173,7 @@ func (zb *Zb) placeOrder(amount, price string, currency CurrencyPair, tradeType 
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+PLACE_ORDER_API, params)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -187,13 +182,13 @@ func (zb *Zb) placeOrder(amount, price string, currency CurrencyPair, tradeType 
 	respmap := make(map[string]interface{})
 	err = json.Unmarshal(resp, &respmap)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 
 	code := respmap["code"].(float64)
 	if code != 1000 {
-		//log.Println(string(resp))
+		log.Println(string(resp))
 		return nil, errors.New(fmt.Sprintf("%.0f", code))
 	}
 
@@ -226,7 +221,6 @@ func (zb *Zb) LimitSell(amount, price string, currency CurrencyPair) (*Order, er
 }
 
 func (zb *Zb) CancelOrder(orderId string, currency CurrencyPair) (bool, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	params := url.Values{}
 	params.Set("method", "cancelOrder")
 	params.Set("id", orderId)
@@ -235,14 +229,14 @@ func (zb *Zb) CancelOrder(orderId string, currency CurrencyPair) (bool, error) {
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+CANCEL_ORDER_API, params)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return false, err
 	}
 
 	respmap := make(map[string]interface{})
 	err = json.Unmarshal(resp, &respmap)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return false, err
 	}
 
@@ -298,7 +292,6 @@ func parseOrder(order *Order, ordermap map[string]interface{}) {
 }
 
 func (zb *Zb) GetOneOrder(orderId string, currency CurrencyPair) (*Order, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	params := url.Values{}
 	params.Set("method", "getOrder")
 	params.Set("id", orderId)
@@ -307,14 +300,14 @@ func (zb *Zb) GetOneOrder(orderId string, currency CurrencyPair) (*Order, error)
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+GET_ORDER_API, params)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 	//println(string(resp))
 	ordermap := make(map[string]interface{})
 	err = json.Unmarshal(resp, &ordermap)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -327,7 +320,6 @@ func (zb *Zb) GetOneOrder(orderId string, currency CurrencyPair) (*Order, error)
 }
 
 func (zb *Zb) GetUnfinishOrders(currency CurrencyPair) ([]Order, error) {
-	currency = zb.adaptCurrencyPair(currency)
 	params := url.Values{}
 	params.Set("method", "getUnfinishedOrdersIgnoreTradeType")
 	params.Set("currency", currency.ToSymbol("_"))
@@ -337,7 +329,7 @@ func (zb *Zb) GetUnfinishOrders(currency CurrencyPair) ([]Order, error) {
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+GET_UNFINISHED_ORDERS_API, params)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -345,14 +337,14 @@ func (zb *Zb) GetUnfinishOrders(currency CurrencyPair) ([]Order, error) {
 	//println(respstr)
 
 	if strings.Contains(respstr, "\"code\":3001") {
-		//log.Println(respstr)
+		log.Println(respstr)
 		return nil, nil
 	}
 
 	var resps []interface{}
 	err = json.Unmarshal(resp, &resps)
 	if err != nil {
-		//log.Println(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -377,7 +369,6 @@ func (zb *Zb) GetKlineRecords(currency CurrencyPair, period, size, since int) ([
 }
 
 func (zb *Zb) Withdraw(amount string, currency Currency, fees, receiveAddr, safePwd string) (string, error) {
-	currency = zb.adaptCurrency(currency)
 	params := url.Values{}
 	params.Set("method", "withdraw")
 	params.Set("currency", strings.ToLower(currency.String()))
@@ -389,14 +380,14 @@ func (zb *Zb) Withdraw(amount string, currency Currency, fees, receiveAddr, safe
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+WITHDRAW_API, params)
 	if err != nil {
-		//log.Println("withdraw fail.", err)
+		log.Println("withdraw fail.", err)
 		return "", err
 	}
 
 	respMap := make(map[string]interface{})
 	err = json.Unmarshal(resp, &respMap)
 	if err != nil {
-		//log.Println(err, string(resp))
+		log.Println(err, string(resp))
 		return "", err
 	}
 
@@ -408,7 +399,6 @@ func (zb *Zb) Withdraw(amount string, currency Currency, fees, receiveAddr, safe
 }
 
 func (zb *Zb) CancelWithdraw(id string, currency Currency, safePwd string) (bool, error) {
-	currency = zb.adaptCurrency(currency)
 	params := url.Values{}
 	params.Set("method", "cancelWithdraw")
 	params.Set("currency", strings.ToLower(currency.String()))
@@ -418,14 +408,14 @@ func (zb *Zb) CancelWithdraw(id string, currency Currency, safePwd string) (bool
 
 	resp, err := HttpPostForm(zb.httpClient, TRADE_URL+CANCELWITHDRAW_API, params)
 	if err != nil {
-		//log.Println("cancel withdraw fail.", err)
+		log.Println("cancel withdraw fail.", err)
 		return false, err
 	}
 
 	respMap := make(map[string]interface{})
 	err = json.Unmarshal(resp, &respMap)
 	if err != nil {
-		//log.Println(err, string(resp))
+		log.Println(err, string(resp))
 		return false, err
 	}
 
@@ -446,11 +436,4 @@ func (zb *Zb) MarketBuy(amount, price string, currency CurrencyPair) (*Order, er
 
 func (zb *Zb) MarketSell(amount, price string, currency CurrencyPair) (*Order, error) {
 	panic("unsupport the market order")
-}
-func (zb *Zb) adaptCurrencyPair(pair CurrencyPair) CurrencyPair {
-
-	return ExchangeCurrenyPairAdpter(zb.GetExchangeName(), pair)
-}
-func (zb *Zb) adaptCurrency(currency Currency) Currency {
-	return ExchangeCurrenyAdpter(zb.GetExchangeName(), currency)
 }
